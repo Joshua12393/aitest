@@ -1,0 +1,15 @@
+{
+  "runtime": "SWI-Prolog version 10.0.2 for x64-win64",
+  "automated_tests_passed": 90,
+  "documented_queries_passed": 27,
+  "menu_flows_passed": 15,
+  "source_check_warnings": 0,
+  "project_sources": [
+    "facts.pl",
+    "proj.pl",
+    "rules.pl",
+    "tests.pl"
+  ],
+  "original_proj_sha256": "22E88D4C6B41AAF16DA765B25E446A76640E8EA2F5E8F9EF6B1129125D8D6D36",
+  "original_unchanged": true
+}

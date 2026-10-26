@@ -1,0 +1,487 @@
+PASS quit
+Input: '0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS end of input
+Input: ''
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice:
+Input closed. Goodbye.
+
+
+PASS unrecognized input is not executed
+Input: 'halt.\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Choose a number from 0 to 17.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS negative time recovery
+Input: '6\n-1\nmedium\ndemo\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Available minutes (0 or more): Energy (low/medium/high): Today in Manila: 2026-10-26. Demo reference: 2026-10-26.
+Reference date (YYYY-MM-DD, demo, or Enter for today): Expected nonnegative_minutes; received -1.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS invalid energy recovery
+Input: '6\n60\nextreme\ndemo\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Available minutes (0 or more): Energy (low/medium/high): Today in Manila: 2026-10-26. Demo reference: 2026-10-26.
+Reference date (YYYY-MM-DD, demo, or Enter for today): Expected energy_level; received extreme.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS invalid date recovery
+Input: '6\n60\nmedium\n2026-02-30\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Available minutes (0 or more): Energy (low/medium/high): Today in Manila: 2026-10-26. Demo reference: 2026-10-26.
+Reference date (YYYY-MM-DD, demo, or Enter for today): Please check the data: invalid_date(2026-02-30)
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS recommend next
+Input: '6\n60\nmedium\ndemo\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Available minutes (0 or more): Energy (low/medium/high): Today in Manila: 2026-10-26. Demo reference: 2026-10-26.
+Reference date (YYYY-MM-DD, demo, or Enter for today):
+Finish and submit the lab report (submit_report)
+Eligible for this session.
+  Overdue by 1 calendar day(s).
+  User-assigned priority: urgent.
+  Estimated remaining work: 30 of 60 available minutes.
+  Difficulty matches the current energy level.
+  Progress: 80%.
+  All prerequisites are complete.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS explain blocked work
+Input: '8\nproofread_paper\n60\nmedium\ndemo\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Task ID: Available minutes (0 or more): Energy (low/medium/high): Today in Manila: 2026-10-26. Demo reference: 2026-10-26.
+Reference date (YYYY-MM-DD, demo, or Enter for today):
+Proofread the research paper (proofread_paper)
+Not eligible for this session.
+  Finish prerequisites: [outline_paper,write_paper].
+  Deadline: scheduled; 3 calendar day(s) away.
+  User-assigned priority: high.
+  Estimated remaining work: 20 of 60 available minutes.
+  Difficulty matches the current energy level.
+  Progress: 0%.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS plan session
+Input: '7\n60\nmedium\ndemo\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Available minutes (0 or more): Energy (low/medium/high): Today in Manila: 2026-10-26. Demo reference: 2026-10-26.
+Reference date (YYYY-MM-DD, demo, or Enter for today):
+Suggested order (assumes each selected task is finished):
+  1. Finish and submit the lab report (submit_report, 30 min)
+  2. Revise lecture notes (revise_notes, 25 min)
+  3. Water the indoor plants (water_plants, 5 min)
+Used: 60 minutes. Unused: 0 minutes.
+This is a priority-first plan; progress has not been changed.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS create and update task
+Input: '3\ng_cli\nCLI sample\nacademic\n4\ncli_task\ng_cli\nRead a chapter\nstudy\n25\neasy\nhigh\nnone\n5\ncli_task\n40\n15\n8\ncli_task\n15\nlow\ndemo\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goal ID (lowercase letters, digits, underscores): Title: Categories: [academic,professional,skill_development,health,household,creative,social,personal]
+Category: Goal added.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: g_course | Complete course requirements | academic | active | 35%
+g_paper | Submit a research paper | academic | active | 20%
+g_career | Prepare for a first job | professional | active | 33%
+g_code | Improve programming skills | skill_development | active | 13%
+g_health | Build a healthy routine | health | active | 0%
+g_home | Keep the home organized | household | active | 0%
+g_art | Develop a creative portfolio | creative | active | 0%
+g_family | Stay connected with family and community | social | active | 0%
+g_read | Read a personal development book | personal | paused | 0%
+g_done | Finish the introductory course | academic | completed | 100%
+g_old | Organize an old collection | personal | abandoned | 0%
+g_cli | CLI sample | academic | active | 0%
+Task ID (lowercase letters, digits, underscores): Goal ID: Title: Task types: [study,assignment,research,review,exam_preparation,thesis_writing,lab_work,presentation_prep,group_project]
+Task type: Estimated remaining minutes (> 0): Difficulty (easy/moderate/hard/very_hard): Priority (urgent/high/medium/low): Deadline (YYYY-MM-DD or none): Task added at 0% progress.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Task ID: Progress percent (0 to 100): Remaining minutes (0 only when complete): Progress and status updated.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Task ID: Available minutes (0 or more): Energy (low/medium/high): Today in Manila: 2026-10-26. Demo reference: 2026-10-26.
+Reference date (YYYY-MM-DD, demo, or Enter for today):
+Read a chapter (cli_task)
+Eligible for this session.
+  No deadline is set.
+  User-assigned priority: high.
+  Estimated remaining work: 15 of 15 available minutes.
+  Difficulty matches the current energy level.
+  Progress: 40%.
+  All prerequisites are complete.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS category mismatch rejected
+Input: '4\nbad_cli\ng_health\nWrong type\nstudy\n20\neasy\nlow\nnone\n15\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: g_course | Complete course requirements | academic | active | 35%
+g_paper | Submit a research paper | academic | active | 20%
+g_career | Prepare for a first job | professional | active | 33%
+g_code | Improve programming skills | skill_development | active | 13%
+g_health | Build a healthy routine | health | active | 0%
+g_home | Keep the home organized | household | active | 0%
+g_art | Develop a creative portfolio | creative | active | 0%
+g_family | Stay connected with family and community | social | active | 0%
+g_read | Read a personal development book | personal | paused | 0%
+g_done | Finish the introductory course | academic | completed | 100%
+g_old | Organize an old collection | personal | abandoned | 0%
+Task ID (lowercase letters, digits, underscores): Goal ID: Title: Task types: [exercise,workout,meditation,stretching,meal_prep,medical_checkup]
+Task type: Estimated remaining minutes (> 0): Difficulty (easy/moderate/hard/very_hard): Priority (urgent/high/medium/low): Deadline (YYYY-MM-DD or none): Please check the data: invalid_task_fields
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Facts: 314; goals: 11; tasks: 33; dependencies: 5
+Validation: no integrity errors.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS pause changes selection
+Input: '9\ng_course\npaused\n6\n60\nmedium\ndemo\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goal ID: Status (active/paused/completed/abandoned): Goal status updated.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Available minutes (0 or more): Energy (low/medium/high): Today in Manila: 2026-10-26. Demo reference: 2026-10-26.
+Reference date (YYYY-MM-DD, demo, or Enter for today):
+Send a job application (send_application)
+Eligible for this session.
+  Deadline: due_today; 0 calendar day(s) away.
+  User-assigned priority: high.
+  Estimated remaining work: 15 of 60 available minutes.
+  Difficulty matches the current energy level.
+  Progress: 0%.
+  All prerequisites are complete.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS cycle rejected
+Input: '10\noutline_paper\nproofread_paper\n15\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Task that must wait: Prerequisite task ID: Please check the data: [dependency_cycle(outline_paper),dependency_cycle(proofread_paper),dependency_cycle(write_paper)]
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Facts: 314; goals: 11; tasks: 33; dependencies: 5
+Validation: no integrity errors.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS archive and restore
+Input: '12\nwalk\ntrue\n12\nwalk\nfalse\n15\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Task ID: Archive? true = archive; false = restore: Task status updated.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Task ID: Archive? true = archive; false = restore: Task status updated.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Facts: 314; goals: 11; tasks: 33; dependencies: 5
+Validation: no integrity errors.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.
+
+
+PASS save/load session
+Input: '3\ng_cli_saved\nSaved goal\npersonal\n13\n3\ng_cli_unsaved\nUnsaved goal\npersonal\n14\n15\n0\n'
+TASK PLANNER - Explainable Prolog recommendations
+Changes are kept in this session. Use Save before exiting.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goal ID (lowercase letters, digits, underscores): Title: Categories: [academic,professional,skill_development,health,household,creative,social,personal]
+Category: Goal added.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Saved: d:/codes kyeruu/prolog/final/task_planner/state.json
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goal ID (lowercase letters, digits, underscores): Title: Categories: [academic,professional,skill_development,health,household,creative,social,personal]
+Category: Goal added.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Saved data loaded and validated.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Facts: 315; goals: 12; tasks: 33; dependencies: 5
+Validation: no integrity errors.
+
+1 Goals              2 Tasks              3 Add goal
+4 Add task           5 Update progress    6 Recommend next
+7 Plan a session     8 Explain a task     9 Goal status
+10 Add dependency   11 Remove dependency 12 Archive/restore
+13 Save             14 Load              15 Validate / counts
+16 Fixed-date demo  17 Allowed values     0 Exit
+Choice: Goodbye.

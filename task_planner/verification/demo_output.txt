@@ -1,0 +1,31 @@
+
+DEMONSTRATION - current data, fixed date 2026-10-26
+Facts: 314; goals: 11; tasks: 33; dependencies: 5
+Validation: no integrity errors.
+
+Finish and submit the lab report (submit_report)
+Eligible for this session.
+  Overdue by 1 calendar day(s).
+  User-assigned priority: urgent.
+  Estimated remaining work: 30 of 60 available minutes.
+  Difficulty matches the current energy level.
+  Progress: 80%.
+  All prerequisites are complete.
+
+Suggested order (assumes each selected task is finished):
+  1. Finish and submit the lab report (submit_report, 30 min)
+  2. Revise lecture notes (revise_notes, 25 min)
+  3. Water the indoor plants (water_plants, 5 min)
+Used: 60 minutes. Unused: 0 minutes.
+This is a priority-first plan; progress has not been changed.
+
+Why proofreading must wait:
+
+Proofread the research paper (proofread_paper)
+Not eligible for this session.
+  Finish prerequisites: [outline_paper,write_paper].
+  Deadline: scheduled; 3 calendar day(s) away.
+  User-assigned priority: high.
+  Estimated remaining work: 20 of 60 available minutes.
+  Difficulty matches the current energy level.
+  Progress: 0%.

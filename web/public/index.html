@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Daywise · Your task planner</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+<main>
+  <header>
+    <a class="brand" href="/" aria-label="Daywise home"><span class="brand-mark" aria-hidden="true">d.</span>daywise</a>
+    <span class="local-badge"><span aria-hidden="true"></span> Local planner</span>
+  </header>
+  <section class="intro">
+    <div><p class="eyebrow" id="today">MAKE ROOM FOR WHAT MATTERS</p><h1>A little clarity.<br>A better day.</h1>
+    <p class="lead">Your tasks, in the right order. Add what’s on your plate<br class="desktop-break"> and let your deadlines guide the next step.</p></div>
+    <div class="summary" aria-label="Planner summary"><div><strong id="pending-count">0</strong><span>to work on</span></div><div><strong id="class-count">0</strong><span>weekly classes</span></div><div><strong id="completed-count">0</strong><span>completed</span></div></div>
+  </section>
+  <div id="error" class="message error" role="alert" hidden></div>
+  <div id="notice" class="message success" role="status" aria-live="polite" hidden></div>
+  <div class="workspace">
+    <aside class="input-panel">
+      <section class="panel">
+        <div class="section-heading"><span class="step">01</span><h2>Add a task</h2></div>
+        <p class="hint">Big deadlines. Small errands. Start here.</p>
+        <form id="task-form">
+          <label for="task-title">Task name</label>
+          <input id="task-title" name="title" placeholder="e.g. Finish AI assignment" maxlength="200" required>
+          <label for="task-type">Task type</label>
+          <select id="task-type" name="type" required disabled><option value="">Loading task types…</option></select>
+          <p id="type-info" class="field-note">Defaults come from the task knowledge base.</p>
+          <div class="form-row"><div><label for="task-days">Deadline in days</label><input id="task-days" name="days_left" type="number" min="-36500" max="36500" step="1" value="2" required></div><div><label for="task-minutes">Estimated minutes</label><input id="task-minutes" name="minutes" type="number" min="1" max="10080" step="1" value="60" required></div></div>
+          <p class="field-note">0 = today · 1 = tomorrow · negative = overdue</p>
+          <button class="primary" type="submit" disabled>Add task <span aria-hidden="true">＋</span></button>
+        </form>
+      </section>
+      <section class="panel">
+        <div class="section-heading"><span class="step">02</span><h2>Add a class</h2></div>
+        <p class="hint">Keep your weekly commitments in view.</p>
+        <form id="class-form">
+          <label for="class-subject">Subject</label><input id="class-subject" name="subject" placeholder="e.g. Computer Networks" maxlength="200" required>
+          <label for="class-day">Day of the week</label><select id="class-day" name="day"><option value="monday">Monday</option><option value="tuesday">Tuesday</option><option value="wednesday">Wednesday</option><option value="thursday">Thursday</option><option value="friday">Friday</option><option value="saturday">Saturday</option><option value="sunday">Sunday</option></select>
+          <div class="form-row"><div><label for="class-start">Starts at</label><input id="class-start" type="time" value="08:00" required></div><div><label for="class-end">Ends at</label><input id="class-end" type="time" value="10:00" required></div></div>
+          <button class="secondary" type="submit" disabled>Add class <span aria-hidden="true">＋</span></button>
+        </form>
+      </section>
+      <div class="knowledge-note"><strong>A plan you can understand.</strong><p><span id="fact-count">120</span> system facts power the Prolog rules. Your deadlines decide the group; task knowledge adds context.</p><details><summary>How the rules work</summary><p>Pending tasks due in 2 days or less go first. Those due in 3–5 days go next. Tasks due after 5 days go later. Within each group, earlier deadlines lead, followed by type priority, difficulty, and duration.</p><p>Classes are saved for reference. This version does not place tasks into calendar slots.</p></details></div>
+    </aside>
+    <div class="plan-panel">
+      <section aria-labelledby="plan-title">
+        <div class="plan-heading"><div><p class="eyebrow">ONE THING AT A TIME</p><h2 id="plan-title">Your next steps</h2></div><form id="time-form" class="time-filter"><label for="available">Time available</label><div><input id="available" type="number" min="0" max="10080" step="1" value="60" required><span>min</span><button type="submit" aria-label="Update available time">↵</button></div></form></div>
+        <p class="hint board-hint">Time-fit badges help you choose. All pending tasks stay visible.</p>
+        <div id="board" aria-live="polite"><p class="empty">Connecting to your planner…</p></div>
+      </section>
+      <section class="schedule panel" aria-labelledby="schedule-title"><div class="list-heading"><div><p class="eyebrow">YOUR WEEK AT A GLANCE</p><h2 id="schedule-title">Class schedule</h2></div><span class="muted">Weekly</span></div><div id="classes"><p class="empty">No classes added yet.</p></div><p class="field-note">Classes are saved as commitments. Tasks are prioritized by deadline.</p></section>
+      <section class="completed panel" aria-labelledby="completed-title"><div class="list-heading"><h2 id="completed-title">Completed</h2><span class="muted" id="completed-label">0 tasks</span></div><div id="completed"><p class="empty">Your finished tasks will appear here.</p></div></section>
+    </div>
+  </div>
+  <footer><span>daywise <span aria-hidden="true">/</span> A calmer way forward.</span><span>Saved on this computer · Asia/Manila</span></footer>
+</main>
+</body>
+</html>

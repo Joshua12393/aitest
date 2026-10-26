@@ -1,0 +1,4 @@
+.tools/
+state.json
+state.json.tmp
+verification/*.log

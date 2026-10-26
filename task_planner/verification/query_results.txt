@@ -1,0 +1,134 @@
+PASS 01 fact counts
+Goal: knowledge_stats(S),writeln(S)
+Expected: stats{dependencies:5,facts:314,goals:11,tasks:33}
+Actual: stats{dependencies:5,facts:314,goals:11,tasks:33}
+
+PASS 02 integrity
+Goal: validate_kb(E),writeln(E)
+Expected: []
+Actual: []
+
+PASS 03 normal recommendation
+Goal: recommend(60,medium,date(2026,10,26),T,_),writeln(T)
+Expected: submit_report
+Actual: submit_report
+
+PASS 04 shorter session
+Goal: recommend(25,medium,date(2026,10,26),T,_),writeln(T)
+Expected: revise_notes
+Actual: revise_notes
+
+PASS 05 fifteen minutes
+Goal: recommend(15,low,date(2026,10,26),T,_),writeln(T)
+Expected: send_application
+Actual: send_application
+
+PASS 06 no fit
+Goal: recommend(4,high,date(2026,10,26),T,_),writeln(T)
+Expected: none
+Actual: none
+
+PASS 07 exact fit
+Goal: eligible(submit_report,30,medium,date(2026,10,26)),writeln(true)
+Expected: true
+Actual: true
+
+PASS 08 insufficient time
+Goal: \+eligible(submit_report,29,medium,date(2026,10,26)),writeln(false)
+Expected: false
+Actual: false
+
+PASS 09 completed
+Goal: \+eligible(resume_edit,60,high,date(2026,10,26)),writeln(false)
+Expected: false
+Actual: false
+
+PASS 10 archived
+Goal: \+eligible(archived_task,60,high,date(2026,10,26)),writeln(false)
+Expected: false
+Actual: false
+
+PASS 11 paused goal
+Goal: \+eligible(paused_reading,60,high,date(2026,10,26)),writeln(false)
+Expected: false
+Actual: false
+
+PASS 12 urgency boundary
+Goal: deadline_info(read_article,date(2026,10,26),B,D),writeln(B-D)
+Expected: due_soon-2
+Actual: due_soon-2
+
+PASS 13 absent deadline
+Goal: deadline_info(walk,date(2026,10,26),B,D),writeln(B-D)
+Expected: no_deadline-none
+Actual: no_deadline-none
+
+PASS 14 transitive path
+Goal: prerequisite_path(proofread_paper,research_sources,P),writeln(P)
+Expected: [proofread_paper,write_paper,outline_paper,research_sources]
+Actual: [proofread_paper,write_paper,outline_paper,research_sources]
+
+PASS 15 transitive blockers
+Goal: blocked_by(proofread_paper,B),writeln(B)
+Expected: [outline_paper,write_paper]
+Actual: [outline_paper,write_paper]
+
+PASS 16 structured explanation
+Goal: explain_task(proofread_paper,60,medium,date(2026,10,26),E),get_dict(eligible,E,A),get_dict(blockers,E,B),writeln(A-B)
+Expected: false-[unfinished_prerequisites([outline_paper,write_paper])]
+Actual: false-[unfinished_prerequisites([outline_paper,write_paper])]
+
+PASS 17 energy mismatch
+Goal: energy_penalty(workout,low,P),writeln(P)
+Expected: 2
+Actual: 2
+
+PASS 18 soft energy preference
+Goal: eligible(exam_review,90,low,date(2026,10,26)),writeln(true)
+Expected: true
+Actual: true
+
+PASS 19 deterministic ties
+Goal: findall(T,(ranked_tasks(60,high,date(2026,10,26),R),member(T,R),memberchk(T,[organize_drawer,sort_shelf])),Ts),writeln(Ts)
+Expected: [organize_drawer,sort_shelf]
+Actual: [organize_drawer,sort_shelf]
+
+PASS 20 recursive session plan
+Goal: session_plan(60,medium,date(2026,10,26),P,U,L),writeln(plan(P,U,L))
+Expected: plan([submit_report,revise_notes,water_plants],60,0)
+Actual: plan([submit_report,revise_notes,water_plants],60,0)
+
+PASS 21 zero time
+Goal: session_plan(0,medium,date(2026,10,26),P,U,L),writeln(plan(P,U,L))
+Expected: plan([],0,0)
+Actual: plan([],0,0)
+
+PASS 22 goal progress
+Goal: goal_progress(g_paper,P),writeln(P)
+Expected: 20
+Actual: 20
+
+PASS 23 invalid date
+Goal: \+valid_date(date(2026,2,30)),writeln(false)
+Expected: false
+Actual: false
+
+PASS 24 invalid context
+Goal: catch(recommend(-1,medium,date(2026,10,26),_,_),error(domain_error(nonnegative_minutes,-1),_),C=true),C==true,writeln(rejected)
+Expected: rejected
+Actual: rejected
+
+PASS 25 complete prerequisite
+Goal: update_progress(outline_paper,100,0),eligible(write_paper,90,high,date(2026,10,26)),writeln(true)
+Expected: true
+Actual: true
+
+PASS 26 reject cycle and roll back
+Goal: catch(add_dependency(outline_paper,proofread_paper),error(validation_error(Es),_),true),nonvar(Es),memberchk(dependency_cycle(outline_paper),Es),\+depends_on(outline_paper,proofread_paper),validate_kb([]),writeln(rejected_and_restored)
+Expected: rejected_and_restored
+Actual: rejected_and_restored
+
+PASS 27 create goal and task
+Goal: add_goal(g_logic,'Learn logic programming',academic),add_task(logic_reading,g_logic,'Read a chapter',study,25,easy,high,date(2026,10,28)),eligible(logic_reading,25,low,date(2026,10,26)),writeln(true)
+Expected: true
+Actual: true
