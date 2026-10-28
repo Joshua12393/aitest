@@ -1,3 +1,7 @@
+# Historical guide
+
+The standalone command-line source, launcher, tests, and generated evidence were removed during the runtime-only cleanup. This Markdown guide is preserved for reference. Run the current web app with `..\web\run.ps1`; only the local SWI-Prolog runtime remains here under `.tools/swipl/`.
+
 # Task Planner: an explainable Prolog recommendation system
 
 Task Planner helps a user choose what to do next from their goals and tasks.

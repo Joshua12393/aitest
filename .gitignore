@@ -1,5 +1,4 @@
-# Temporary document-generation workspace and Office lock files.
-/.writeup_work/
+# Office lock files.
 ~$*
 
 # Local runtime downloads, generated caches, and personal environment settings.
@@ -12,5 +11,3 @@ __pycache__/
 
 # User-entered planner records remain local.
 /web/data/
-/task_planner/state.json
-/task_planner/state.json.tmp

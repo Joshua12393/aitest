@@ -30,7 +30,9 @@
         <form id="task-form">
           <label for="task-title">Task name</label>
           <input id="task-title" name="title" placeholder="e.g. Finish AI assignment" maxlength="200" required>
-          <label class="review-checkbox"><input id="task-review" type="checkbox"> This is a quiz or exam</label>
+          <label for="task-type">Task type</label>
+          <select id="task-type" name="type" aria-describedby="type-info" required disabled><option value="">Loading task types…</option></select>
+          <p id="type-info" class="field-note" aria-live="polite">Choose a type to see its category and suggested work time.</p>
           <label for="task-subject">Subject <span class="muted">(optional)</span></label><input id="task-subject" list="subject-options" maxlength="200" placeholder="e.g. Computer Networks"><datalist id="subject-options"></datalist>
           <div class="form-row"><div><label for="task-date">Deadline date</label><input id="task-date" type="date" min="1900-01-01" max="9999-12-31" required></div><div><label for="task-deadline-time">Deadline time</label><input id="task-deadline-time" type="time" value="23:59" required></div></div>
           <label id="duration-label" for="task-minutes">Total work time needed</label><div class="duration-field"><input id="task-minutes" name="minutes" type="number" min="1" max="10080" step="1" value="60" required><select id="task-unit" aria-label="Duration unit"><option value="minutes">Minutes</option><option value="hours">Hours</option></select></div>

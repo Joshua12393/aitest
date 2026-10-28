@@ -20,7 +20,7 @@ swipl -q -s web/server.pl -- 8080
 
 ## Features
 
-- User-entered tasks, estimates, deadlines, and weekly classes.
+- User-entered tasks, estimates, deadlines, and weekly classes. A task-type dropdown exposes all 20 knowledge profiles, displays their category and attributes, and suggests an editable duration.
 - **Do First:** pending tasks due in 2 days or less, including overdue tasks.
 - **Do Next:** pending tasks due in 3–5 days.
 - **Do Later:** pending tasks due after 5 days.
@@ -33,22 +33,11 @@ The timetable uses recurring classes and user-entered task durations/deadlines. 
 
 ## Project contents
 
-- [`web/`](web/README.md): implemented web app, Prolog rules, tests, launchers, and verification previews.
-- [`task_planner/`](task_planner/README.md): earlier standalone command-line planner, retained separately.
-- `proj.pl` and `proj2.pl`: original Prolog prototypes.
-- `Goal_and_Task_Recommendation_System_Writeup.docx` and its updated version: project write-ups.
+- [`web/`](web/README.md): web app, Prolog rules, frontend, and launcher.
+- `web/data/state.json`: saved user tasks, classes, settings, and chosen work sessions (local only).
+- `task_planner/.tools/swipl/`: local SWI-Prolog runtime used by the launcher.
+- Markdown guides and historical verification notes are preserved. The earlier prototypes, write-ups, generated previews, and test files were removed during cleanup.
 
-## Tests
+## Verification
 
-```powershell
-.\web\run.ps1 -Mode test
-.\web\smoke.ps1
-```
-
-The web implementation passed 51 PlUnit tests and 47 isolated HTTP integration checks, including class/task sequencing, splitting three hours around classes, shortage reporting, and persistence. Six optional calendar date tests run with `node --test web/calendar.test.cjs`. The HTTP script requires PowerShell 7+. See [`web/verification/README.md`](web/verification/README.md) for the checked workflows.
-
-## Preview
-
-The preview uses the specification's example tasks. They are not seeded into the application.
-
-![Task planner preview](web/verification/example-desktop.png)
+Before cleanup, 54 Prolog tests, 66 isolated HTTP integration checks, and 6 calendar tests passed. Test scripts and preview images were then removed because they are not required to run the app. Historical checks remain in [`web/verification/README.md`](web/verification/README.md).

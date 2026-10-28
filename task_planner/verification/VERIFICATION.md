@@ -1,3 +1,7 @@
+# Historical verification record
+
+The source, tests, and generated evidence referenced below were removed during cleanup. This Markdown record is preserved for reference and describes the earlier command-line prototype.
+
 # Verification results
 
 Verified on **2026-10-26 (Asia/Manila)** with **SWI-Prolog 10.0.2, Windows x64**.

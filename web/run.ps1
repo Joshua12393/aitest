@@ -1,5 +1,4 @@
 param(
-    [ValidateSet('server', 'test')][string]$Mode = 'server',
     [ValidateRange(1024, 65535)][int]$Port = 8080
 )
 $ErrorActionPreference = 'Stop'
@@ -9,9 +8,5 @@ if (-not (Test-Path -LiteralPath $plannerRuntime)) {
     if (-not $plannerCommand) { throw 'Install SWI-Prolog or restore the local task_planner runtime.' }
     $plannerRuntime = $plannerCommand.Source
 }
-if ($Mode -eq 'test') {
-    & $plannerRuntime -q -s (Join-Path $PSScriptRoot 'tests.pl') -g run_tests -t halt
-} else {
-    & $plannerRuntime -q -s (Join-Path $PSScriptRoot 'server.pl') -- $Port
-}
+& $plannerRuntime -q -s (Join-Path $PSScriptRoot 'server.pl') -- $Port
 exit $LASTEXITCODE

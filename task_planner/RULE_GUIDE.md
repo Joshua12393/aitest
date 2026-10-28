@@ -1,3 +1,7 @@
+# Historical guide
+
+This guide describes the earlier command-line prototype, whose source was removed during cleanup. It is preserved for reference; the current web app uses the modules under `../web/`.
+
 # Rule guide and design defense
 
 These 25 predicate definitions implement distinct reasoning or integrity

@@ -1,6 +1,7 @@
 'use strict';
 const $ = id => document.getElementById(id);
 const pretty = s => String(s).replaceAll('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
+const taskTypeLabel = type => type === 'exam_review' ? 'Quiz / exam review' : pretty(type);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state;
 let busy = false;
@@ -53,7 +54,7 @@ function deadline(days) {
 function taskCard(task, completed = false) {
   return `<article class="task-card"><div class="task-top">
     <button class="task-check" data-action="${completed ? 'reopen' : 'complete'}" data-id="${esc(task.id)}" aria-label="${completed ? 'Reopen' : 'Complete'} ${esc(task.title)}">${completed ? '✓' : ''}</button>
-    <div class="task-info"><h4 class="task-title">${esc(task.title)}</h4><div class="task-meta"><span>${task.type === 'exam_review' ? 'Quiz / Exam review' : 'Task'}</span><span>·</span><span>${duration(task.minutes)}</span><span>·</span><span>${esc(task.due_date)} · ${clock(task.deadline_time)}</span></div></div>
+    <div class="task-info"><h4 class="task-title">${esc(task.title)}</h4><div class="task-meta"><span>${esc(taskTypeLabel(task.type))} · ${esc(pretty(task.category))}</span><span>·</span><span>${duration(task.minutes)}</span><span>·</span><span>${esc(task.due_date)} · ${clock(task.deadline_time)}</span></div></div>
     <button class="delete" data-action="delete-task" data-id="${esc(task.id)}" aria-label="Delete ${esc(task.title)}">×</button></div>
     ${completed ? '' : `<p class="task-reason">${esc(task.reason)}</p><div class="task-tags"><span class="tag ${task.days_left <= 2 ? 'due' : ''}">${esc(deadline(task.days_left))}</span><span class="tag ${task.fits_time ? 'fits' : 'long'}">${task.fits_time ? 'Fits your time' : 'Needs more time'}</span><span class="tag">${esc(pretty(task.priority))} priority</span><span class="tag">${esc(pretty(task.difficulty))} · ${esc(task.energy)} energy</span></div>`}</article>`;
 }
@@ -171,7 +172,11 @@ function clock(minutes) {
 }
 
 function updateType() {
-  $('duration-label').textContent = $('task-review').checked ? 'Review time needed' : 'Total work time needed';
+  const type = state.types.find(type => type.id === $('task-type').value);
+  if (!type) return;
+  $('duration-label').textContent = type.id === 'exam_review' ? 'Review time needed' : 'Total work time needed';
+  $('task-minutes').value = $('task-unit').value === 'hours' ? Number((type.minutes/60).toFixed(2)) : type.minutes;
+  $('type-info').textContent = `${pretty(type.category)} · ${pretty(type.priority)} priority · ${pretty(type.difficulty)} · ${pretty(type.energy)} energy. Typical time: ${duration(type.minutes)}; adjust it to your needs.`;
 }
 
 async function refresh() {
@@ -217,10 +222,10 @@ async function change(path, body, message, onSaved = () => {}) {
   }
 }
 
-$('task-review').addEventListener('change', updateType);
+$('task-type').addEventListener('change', updateType);
 $('task-form').addEventListener('submit', event => {
   event.preventDefault();
-  change('/api/tasks', {title:$('task-title').value, is_review:$('task-review').checked,
+  change('/api/tasks', {title:$('task-title').value, type:$('task-type').value,
     due_date:$('task-date').value, minutes:Math.round(Number($('task-minutes').value)*($('task-unit').value === 'hours' ? 60 : 1)),
     subject:$('task-subject').value,deadline_time:minutesOf($('task-deadline-time').value)},
     'Task saved. Your next steps are up to date.', () => { $('task-title').value = ''; $('task-title').focus(); });
@@ -279,6 +284,9 @@ document.addEventListener('click', event => {
 
 async function init() {
   await refresh();
+  $('task-type').innerHTML = state.types.map(type => `<option value="${esc(type.id)}">${esc(taskTypeLabel(type.id))}</option>`).join('');
+  $('task-type').value = 'assignment';
+  $('task-type').disabled = false;
   $('task-date').value = state.today;
   document.querySelectorAll('button[type="submit"]').forEach(button => { button.disabled = false; });
   updateType();

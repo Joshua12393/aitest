@@ -1,3 +1,13 @@
+# Historical verification record
+
+The test scripts and preview images referenced below were removed during cleanup. This Markdown history is preserved. Immediately before cleanup, 54 Prolog tests, 66 isolated HTTP checks, and 6 calendar tests passed.
+
+## Restored task-type dropdown - 2026-10-28
+
+- Restored all 20 Prolog task types, profile attributes, editable duration defaults, and type/category labels on task cards. Quiz / exam review remains available as a type.
+- Recovered test scripts into a temporary directory outside the project for verification: 54 Prolog tests, 66 HTTP checks, and 6 calendar tests passed. All 20 profiles were also submitted to an isolated server and checked for their category, priority, difficulty, energy, duration, and recommendation group.
+- Browser verified cleaning and quiz-review submissions, hours conversion, preservation of custom durations on refresh, class editing, chosen work-time editing, and persistence through a page reload. No browser warnings or errors were reported. Tests used separate temporary data; actual saved tasks and classes were preserved.
+
 # Implementation verification — 2026-10-26
 
 - `../run.ps1 -Mode test`: **25 PlUnit tests passed** on the existing local SWI-Prolog runtime.

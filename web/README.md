@@ -14,7 +14,7 @@ Open http://localhost:8080. Use `-Port 8081` for another port. Ctrl+C stops the 
 
 ## What is implemented
 
-- Task form: title, task type, optional subject, deadline in days with an exact finish-before time, and required work time in minutes or hours. Exam/quiz review defaults to completion before the deadline day starts (00:00); users can change the time.
+- Task form: title, a dropdown with all 20 task types, optional subject, exact deadline date/time, and required work time in minutes or hours. Selecting a type shows its category, priority, difficulty, energy, and typical duration from the Prolog knowledge base; the suggested duration can be changed. Quiz / exam review is a dropdown option and uses the review-time label. The deadline time remains explicitly editable.
 - Class form: weekday checkboxes, subject, start/end time, including minute precision. Select multiple days to save the same class on each day in one action. If any selected entry is invalid or already saved, the whole addition is rejected.
 - **Do First:** pending tasks due in 2 days or less, including today and overdue work.
 - **Do Next:** pending tasks due in 3–5 days.
@@ -42,16 +42,15 @@ The timeline is a recomputed suggestion, not a locked reservation or an actual-w
 
 - `system_facts.pl`: 20 task types with 6 explicit facts each: `system_task/1`, `task_category/2`, `typical_minutes/2`, `task_difficulty/2`, `task_priority/2`, `task_energy/2`. Exactly **120 system facts**, independently counted from loaded clauses.
 - `planner.pl`: dynamic `user_task/5` and `user_class/4`; urgency/recommendation rules; validation; JSON persistence. `user_task(Id, Type, DaysLeft, Minutes, Status)` uses unique IDs with a separate title. `user_class(Day, StartMinuteOfDay, EndMinuteOfDay, Subject)` stores times as minutes after midnight: 08:30 = 510. Companion metadata keeps IDs and absolute due dates.
-- `scheduler.pl`: pure Prolog free-interval detection, task allocation, shortage reporting, and merging classes/work/free time into one daily sequence. `scheduler_tests.pl` checks the scheduling invariants independently of the HTTP server.
+- `scheduler.pl`: pure Prolog free-interval detection, task allocation, shortage reporting, and merging classes/work/free time into one daily sequence.
 - `server.pl`: local HTTP server, JSON endpoints, static frontend, error handling, and browser-origin checks for mutations.
 - `public/`: HTML, CSS, and JavaScript. Prolog determines each bucket, ordering, and time-fit result; JavaScript renders the returned data.
-- `tests.pl`: PlUnit coverage for the specification, boundaries, knowledge count, calendar handling, persistence, and rollback.
 
 Within each group, earlier deadlines lead. Equal deadlines use system priority (high first), difficulty (hard first), estimated duration (shorter first), and ID. This makes system knowledge useful while preserving the specified deadline thresholds. The user's estimate may override the task type's typical estimate. Difficulty and energy remain visible context.
 
 Due dates use Asia/Manila calendar days. They are persisted as ISO dates, and Prolog refreshes `DaysLeft` whenever state is requested. The page refreshes every minute and on returning to the tab. Completed tasks keep their original estimate for reference but are excluded from all three recommendation predicates.
 
-The separate command-line planner in `../task_planner/` and the original `../proj.pl` and `../proj2.pl` are retained. This web app now loads its own spec-aligned modules rather than the old hardcoded demo records in `proj2.pl`.
+The web app loads only its own Prolog modules. Earlier standalone prototypes have been removed; their Markdown guides remain as historical documentation. The local SWI-Prolog runtime remains under `../task_planner/.tools/swipl/`.
 
 ## Storage
 
@@ -59,22 +58,14 @@ Every accepted change is saved to `web/data/state.json`. Writes use a temporary 
 
 ## Verify
 
-```powershell
-.\run.ps1 -Mode test
-.\smoke.ps1
-node --test calendar.test.cjs
-```
-
-`smoke.ps1` requires PowerShell 7+ and runs HTTP checks against its own temporary state file and port. It verifies all three example groups, mutations, bad inputs, origin checks, and persistence across a real server restart, then removes its test files.
-
-The optional calendar checks use Node's built-in test runner to verify month/year boundaries, leap days, exact date filtering, and timezone-independent display. Node is not required to run the application.
+Before cleanup, 54 Prolog tests, 66 isolated HTTP checks, and 6 calendar tests passed. The test files and scripts were removed during cleanup because the app does not need them at runtime. Historical verification notes remain under `verification/`.
 
 For the three examples in the document, add an assignment due in 1 day, reading due in 4 days, and cleaning due in 10 days. They appear under Do First, Do Next, and Do Later respectively. Add Monday Computer Networks from 08:00 to 10:00; it appears in the saved class list. Reload or restart to verify persistence.
 
 API: `GET /api/state?minutes=60&date=2026-10-29` returns the shared plan and selected day's timeline. JSON POSTs: `/api/tasks` (`title`, `type`, `days_left`, `minutes`, optional `subject` and `deadline_time` minute-of-day), `/api/planning` (`day_start`, `day_end` minutes), `/api/classes` (`subject`, `days` array, `start`, `end`; legacy single `day` is accepted), `/api/task_status` (`id`, `status`), `/api/delete_task` (`id`), `/api/delete_class` (`id`). New tasks/classes return 201; validation failures return 400. Older schema-1 JSON files without scheduling options still load using defaults.
 # Editable schedules and exact deadlines
 
-Task entry now uses an exact deadline date and time (Asia/Manila). Check **This is a quiz or exam** for review time; otherwise enter total work time. Both accept hours or minutes. The type dropdown is removed. Internally, new ordinary tasks use the existing `assignment` knowledge profile and reviews use `exam_review`; legacy task types and saved records remain supported.
+Task entry uses an exact deadline date and time (Asia/Manila). The **Task type** dropdown is restored and sends the selected type to Prolog, so types such as research, cleaning, exercise, and work use their own knowledge profiles. Choose **Quiz / exam review** for review time; other types use the total-work label. Both accept hours or minutes. Changing the type suggests its typical duration in the currently selected unit. Automatic refresh preserves the selected type and any manually edited duration. Task cards show the selected type and its category. The backend retains compatibility with older checkbox-based requests and saved records.
 
 Use **Edit** in the class list or **Edit class** in the calendar to change a weekly occurrence's subject, weekday, and times. Each weekday is a separate saved occurrence.
 

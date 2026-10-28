@@ -1,3 +1,7 @@
+# Historical queries
+
+These queries target the earlier command-line prototype, whose source and tests were removed during cleanup. This file is preserved as historical documentation.
+
 # Test queries and expected results
 
 Load a fresh `proj.pl` in SWI-Prolog. Queries 1–24 are read-only and use the
