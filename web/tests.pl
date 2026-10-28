@@ -2,6 +2,7 @@
 :- use_module('system_facts.pl').
 :- use_module(library(plunit)).
 :- use_module(library(http/json)).
+:- ensure_loaded('scheduler_tests.pl').
 
 :- begin_tests(adaptive_planner, [setup(planner:reset_user_data), cleanup(planner:reset_user_data)]).
 
@@ -85,9 +86,55 @@ test(duplicate_class, [setup(planner:reset_user_data), cleanup(planner:reset_use
     Data = _{day:"monday",subject:"AI",start:480,end:600},
     planner:add_class(Data), planner:add_class(Data).
 
+test(multiple_class_days,
+     [setup(store_setup(File,Old)), cleanup(store_cleanup(File,Old))]) :-
+    mutate(add_classes(_{days:["monday","wednesday","friday"],subject:"Networks",start:480,end:600})),
+    planner:reset_user_data, init_store, snapshot(60,State),
+    findall(Day, user_class(Day,480,600,'Networks'), Days),
+    Days == [monday,wednesday,friday], length(State.classes,3).
+
+test(empty_class_days, [throws(error(validation_error(_),_))]) :-
+    planner:add_classes(_{days:[],subject:"AI",start:480,end:600}).
+
+test(repeated_class_days, [throws(error(validation_error(_),_))]) :-
+    planner:add_classes(_{days:["monday","monday"],subject:"AI",start:480,end:600}).
+
+test(class_days_must_be_list, [throws(error(validation_error(_),_))]) :-
+    planner:add_classes(_{days:"monday",subject:"AI",start:480,end:600}).
+
+test(multiple_days_duplicate_rolls_back,
+     [setup(store_setup(File,Old)), cleanup(store_cleanup(File,Old))]) :-
+    mutate(add_classes(_{days:["wednesday"],subject:"AI",start:480,end:600})),
+    catch(mutate(add_classes(_{days:["monday","wednesday"],subject:"AI",start:480,end:600})),
+          error(validation_error(_),_), true),
+    \+ user_class(monday,_,_,_), planner:reset_user_data, init_store,
+    findall(Day,user_class(Day,_,_,_),[wednesday]).
+
+test(multiple_days_invalid_rolls_back,
+     [setup(store_setup(File,Old)), cleanup(store_cleanup(File,Old))]) :-
+    catch(mutate(add_classes(_{days:["monday","noday"],subject:"AI",start:480,end:600})),
+          error(validation_error(_),_), true),
+    \+ user_class(_,_,_,_), \+ exists_file(File).
+
 test(calendar_round_trip) :-
     planner:iso_day("2028-02-29", Day), planner:day_iso(Day,"2028-02-29"),
     \+ planner:iso_day("2026-02-30", _).
+
+test(planning_preferences_and_task_options_persist,
+     [setup(store_setup(File,Old)), cleanup(store_cleanup(File,Old))]) :-
+    mutate(set_planning(_{day_start:540,day_end:1260})),
+    mutate(add_task(_{title:"Quiz review",type:"exam_review",days_left:2,minutes:180,
+                      subject:"Networks",deadline_time:600})),
+    planner:reset_user_data,init_store,snapshot(60,State),
+    State.planning_settings.day_start=:=540,State.planning_settings.day_end=:=1260,
+    State.tasks=[T],T.subject=='Networks',T.deadline_time=:=600.
+
+test(invalid_planning_hours,[throws(error(validation_error(_),_))]) :-
+    planner:set_planning(_{day_start:1320,day_end:480}).
+
+test(review_deadline_default_is_start_of_deadline_day,
+     [setup(planner:reset_user_data),cleanup(planner:reset_user_data)]) :-
+    add(2,"exam_review",Id),planner:task_options(Id,'',0).
 
 test(persistence_and_atomic_replacement,
      [setup(store_setup(File,Old)), cleanup(store_cleanup(File,Old))]) :-

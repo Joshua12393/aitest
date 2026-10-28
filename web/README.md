@@ -14,24 +14,35 @@ Open http://localhost:8080. Use `-Port 8081` for another port. Ctrl+C stops the 
 
 ## What is implemented
 
-- Task form: title, task type, deadline in whole days, estimated minutes.
-- Class form: weekday, subject, start/end time, including minute precision.
+- Task form: title, task type, optional subject, deadline in days with an exact finish-before time, and required work time in minutes or hours. Exam/quiz review defaults to completion before the deadline day starts (00:00); users can change the time.
+- Class form: weekday checkboxes, subject, start/end time, including minute precision. Select multiple days to save the same class on each day in one action. If any selected entry is invalid or already saved, the whole addition is rejected.
 - **Do First:** pending tasks due in 2 days or less, including today and overdue work.
 - **Do Next:** pending tasks due in 3–5 days.
 - **Do Later:** pending tasks due after 5 days.
 - Complete, reopen, and delete tasks; delete saved classes.
+- Monthly calendar with a chronological daily timeline: weekly classes, Prolog-suggested task sessions, and remaining vacant periods interleave by start time. Due-task details remain available below the timeline. Calendar dots distinguish class days and planned work.
+- Editable planning hours, defaulting to **8 AM–10 PM**, saved locally. Prolog splits long work across vacant periods and days, avoids classes and other allocated tasks, stops at the exact deadline, and reports any minutes it cannot place.
 - Type-based default estimates, category, priority, difficulty, energy, and explanations.
 - Optional available-time badges. Longer tasks stay visible in their deadline group.
 - Blank initial user data. Every displayed task/class comes from user input.
 - Automatically saved local JSON, validated on loading and restored at startup.
 - Responsive layout, labeled controls, escaped user text, and accessible status messages.
 
-The implementation follows the document's simple first version. Class records are stored for reference; the app does not allocate calendar slots or claim to prevent class/task scheduling conflicts. A deadline is required. This is a single local planner shared by tabs on this computer, without accounts or cloud synchronization.
+The current version extends the document's first version with automatic time suggestions, as requested. A deadline is required. This is a single local planner shared by tabs on this computer, without accounts or cloud synchronization.
+
+## Scheduling policy
+
+`scheduler.pl` performs the allocation in Prolog. It expands weekly classes into occupied intervals, accounts for overlapping classes when finding gaps, then allocates pending tasks in deadline order (including deadline time); the existing priority/difficulty/duration order breaks equal deadlines. Work may be split between gaps, so a 180-minute review can occupy 10–11 and 12–14 around an 11–12 class. Sessions are chronological in each selected date's returned timeline. Classes outside planning hours still appear.
+
+Suggestions cover today and the next 89 days. Today's allocation starts at or after the current Asia/Manila time, rounded up to five minutes. Sessions never overlap a class or another suggested task; they are not placed after their finish-before time. Impossible or overdue deadlines produce an explicit unscheduled-minute warning instead of silently placing late work. Longer deadlines can also produce a horizon-related shortage. This is an earliest-free-period planner; it does not infer meals, travel, breaks, attendance, or completed work.
+
+The timeline is a recomputed suggestion, not a locked reservation or an actual-work log. A task's input duration remains the outstanding work until the user marks the whole task complete. Merely reaching a suggested session's end does not count as completion; unfinished work may move when time advances or inputs change. Each snapshot builds one shared plan, so viewing tomorrow does not allocate the same task again independently for that date.
 
 ## Prolog structure
 
 - `system_facts.pl`: 20 task types with 6 explicit facts each: `system_task/1`, `task_category/2`, `typical_minutes/2`, `task_difficulty/2`, `task_priority/2`, `task_energy/2`. Exactly **120 system facts**, independently counted from loaded clauses.
 - `planner.pl`: dynamic `user_task/5` and `user_class/4`; urgency/recommendation rules; validation; JSON persistence. `user_task(Id, Type, DaysLeft, Minutes, Status)` uses unique IDs with a separate title. `user_class(Day, StartMinuteOfDay, EndMinuteOfDay, Subject)` stores times as minutes after midnight: 08:30 = 510. Companion metadata keeps IDs and absolute due dates.
+- `scheduler.pl`: pure Prolog free-interval detection, task allocation, shortage reporting, and merging classes/work/free time into one daily sequence. `scheduler_tests.pl` checks the scheduling invariants independently of the HTTP server.
 - `server.pl`: local HTTP server, JSON endpoints, static frontend, error handling, and browser-origin checks for mutations.
 - `public/`: HTML, CSS, and JavaScript. Prolog determines each bucket, ordering, and time-fit result; JavaScript renders the returned data.
 - `tests.pl`: PlUnit coverage for the specification, boundaries, knowledge count, calendar handling, persistence, and rollback.
@@ -51,10 +62,26 @@ Every accepted change is saved to `web/data/state.json`. Writes use a temporary 
 ```powershell
 .\run.ps1 -Mode test
 .\smoke.ps1
+node --test calendar.test.cjs
 ```
 
 `smoke.ps1` requires PowerShell 7+ and runs HTTP checks against its own temporary state file and port. It verifies all three example groups, mutations, bad inputs, origin checks, and persistence across a real server restart, then removes its test files.
 
+The optional calendar checks use Node's built-in test runner to verify month/year boundaries, leap days, exact date filtering, and timezone-independent display. Node is not required to run the application.
+
 For the three examples in the document, add an assignment due in 1 day, reading due in 4 days, and cleaning due in 10 days. They appear under Do First, Do Next, and Do Later respectively. Add Monday Computer Networks from 08:00 to 10:00; it appears in the saved class list. Reload or restart to verify persistence.
 
-API: `GET /api/state?minutes=60`; JSON POSTs to `/api/tasks` (`title`, `type`, `days_left`, `minutes`), `/api/classes` (`subject`, `day`, `start`, `end`), `/api/task_status` (`id`, `status`), `/api/delete_task` (`id`), `/api/delete_class` (`id`). New tasks/classes return 201; validation failures return 400.
+API: `GET /api/state?minutes=60&date=2026-10-29` returns the shared plan and selected day's timeline. JSON POSTs: `/api/tasks` (`title`, `type`, `days_left`, `minutes`, optional `subject` and `deadline_time` minute-of-day), `/api/planning` (`day_start`, `day_end` minutes), `/api/classes` (`subject`, `days` array, `start`, `end`; legacy single `day` is accepted), `/api/task_status` (`id`, `status`), `/api/delete_task` (`id`), `/api/delete_class` (`id`). New tasks/classes return 201; validation failures return 400. Older schema-1 JSON files without scheduling options still load using defaults.
+# Editable schedules and exact deadlines
+
+Task entry now uses an exact deadline date and time (Asia/Manila). Check **This is a quiz or exam** for review time; otherwise enter total work time. Both accept hours or minutes. The type dropdown is removed. Internally, new ordinary tasks use the existing `assignment` knowledge profile and reviews use `exam_review`; legacy task types and saved records remain supported.
+
+Use **Edit** in the class list or **Edit class** in the calendar to change a weekly occurrence's subject, weekday, and times. Each weekday is a separate saved occurrence.
+
+Use **Edit time** on any work session to choose its date, start, and end. This saves a fixed session; Prolog reserves it before allocating the task's remaining minutes. You may split work by shortening a chosen session, but chosen sessions cannot exceed the task's total work. Other automatic suggestions may rearrange. Fixed sessions survive refresh/restart; **Return to automatic scheduling** removes the reservation. They remain on their chosen dates as time passes and do not mark the task complete.
+
+New chosen sessions must be in the future within 90 days, within planning hours, before the deadline, and clear of classes and other chosen sessions. Conflicting class/planning-hour edits fail atomically with an explanation. Move or release the chosen work session first. Completed tasks are excluded from scheduling; deleting a task removes its reservations.
+
+Added routes: `POST /api/edit_class`, `/api/session`, `/api/delete_session`. Optional `sessions` in schema-1 storage preserves compatibility with existing files. The pure scheduler supports `build_plan/7` for reservations; `build_plan/6` remains supported.
+
+Verified: 54 Prolog tests, 66 isolated HTTP checks (including editing, rejection rollback and restart persistence), and 6 calendar tests.

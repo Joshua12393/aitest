@@ -26,9 +26,10 @@ swipl -q -s web/server.pl -- 8080
 - **Do Later:** pending tasks due after 5 days.
 - 120 meaningful system facts across 20 task types, separate from dynamic user facts.
 - Type-based estimates and explanations, available-time badges, task completion and reopening.
+- Clickable monthly calendar with a daily sequence of classes, suggested work, and free periods. Prolog splits allotted work time across vacant periods before deadlines; planning hours are editable (default 8 AM–10 PM).
 - Local JSON persistence, input validation, and responsive desktop/mobile layouts.
 
-Class schedules are stored for reference. This first version prioritizes tasks by deadline; it does not assign tasks to calendar slots. It is a single local planner, without accounts or cloud synchronization. Saved user data is excluded from Git.
+The timetable uses recurring classes and user-entered task durations/deadlines. Suggestions cover the next 90 days, avoid class/task collisions, and report work that cannot fit. They are recalculated suggestions rather than confirmed reservations or automatic completion records. It is a single local planner, without accounts or cloud synchronization. Saved user data is excluded from Git.
 
 ## Project contents
 
@@ -44,7 +45,7 @@ Class schedules are stored for reference. This first version prioritizes tasks b
 .\web\smoke.ps1
 ```
 
-The web implementation passed 25 PlUnit tests and 23 isolated HTTP integration checks, including persistence across a server restart. The HTTP script requires PowerShell 7+. See [`web/verification/README.md`](web/verification/README.md) for the checked workflows.
+The web implementation passed 51 PlUnit tests and 47 isolated HTTP integration checks, including class/task sequencing, splitting three hours around classes, shortage reporting, and persistence. Six optional calendar date tests run with `node --test web/calendar.test.cjs`. The HTTP script requires PowerShell 7+. See [`web/verification/README.md`](web/verification/README.md) for the checked workflows.
 
 ## Preview
 

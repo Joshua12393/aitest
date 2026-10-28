@@ -16,6 +16,10 @@
 :- http_handler(root(api/delete_task), guarded(delete_task), [method(post)]).
 :- http_handler(root(api/classes), guarded(create_class), [method(post)]).
 :- http_handler(root(api/delete_class), guarded(delete_class), [method(post)]).
+:- http_handler(root(api/planning), guarded(change_planning), [method(post)]).
+:- http_handler(root(api/edit_class), guarded(edit_class), [method(post)]).
+:- http_handler(root(api/session), guarded(set_session), [method(post)]).
+:- http_handler(root(api/delete_session), guarded(delete_session), [method(post)]).
 :- http_handler(root(.), serve_public, [prefix]).
 
 start :-
@@ -58,9 +62,11 @@ json_body(Request, Body) :-
     (is_dict(Body) -> true ; throw(error(validation_error('Send a JSON object.'), _))).
 
 read_state(Request) :-
-    catch(http_parameters(Request, [minutes(Minutes, [integer, between(0, 10080), default(60)])]),
+    catch(http_parameters(Request, [minutes(Minutes, [integer, between(0, 10080), default(60)]),
+                                    date(Selected,[string,optional(true)])]),
           _, throw(error(validation_error('Available minutes must be a whole number from 0 to 10080.'), _))),
-    planner:snapshot(Minutes, State), reply_json_dict(State).
+    (var(Selected) -> planner:snapshot(Minutes,State) ; planner:snapshot(Minutes,Selected,State)),
+    reply_json_dict(State).
 
 create_task(Request) :-
     json_body(Request, Body), planner:mutate(add_task(Body)),
@@ -70,7 +76,15 @@ change_status(Request) :-
 delete_task(Request) :-
     json_body(Request, Body), planner:mutate(remove_task(Body)), reply_json_dict(_{ok:true}).
 create_class(Request) :-
-    json_body(Request, Body), planner:mutate(add_class(Body)),
+    json_body(Request, Body), planner:mutate(add_classes(Body)),
     reply_json_dict(_{ok:true}, [status(201)]).
 delete_class(Request) :-
     json_body(Request, Body), planner:mutate(remove_class(Body)), reply_json_dict(_{ok:true}).
+change_planning(Request) :-
+    json_body(Request,Body),planner:mutate(set_planning(Body)),reply_json_dict(_{ok:true}).
+edit_class(Request) :-
+    json_body(Request,Body),planner:mutate(edit_class(Body)),reply_json_dict(_{ok:true}).
+set_session(Request) :-
+    json_body(Request,Body),planner:mutate(set_session(Body)),reply_json_dict(_{ok:true}).
+delete_session(Request) :-
+    json_body(Request,Body),planner:mutate(remove_session(Body)),reply_json_dict(_{ok:true}).
